@@ -37,7 +37,25 @@ namespace PowerShellService
             }
         }
 
-        List<Model.PowerShellScript> IPowerShellService.GetRegisteredPowerShellScripts()
+        List<string> IPowerShellService.GetNamesForRegisteredPowerShellScripts()
+        {
+            try
+            {
+                var fakeNamesList = new List<string> {"ScripName1", "ScripName2", "ScripName3", "ScripName4" };
+                return fakeNamesList;
+                this.SetResponseHttpStatus(HttpStatusCode.OK);
+
+            }
+            catch (Exception ex)
+            {
+                var message = $"Couldn't return GetNamesForRegisteredPowerShellScripts. Reason: {ex.Message}";
+                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
+                log.Error(message, ex);
+            }
+            return null;
+        }
+
+        Model.PowerShellScript IPowerShellService.GetRegisteredPowerShellScriptPrototype(string powerShellScriptName)
         {
             try
             {
@@ -64,13 +82,14 @@ namespace PowerShellService
             }
             catch (Exception ex)
             {
-                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: $"Couldn't return GetRegisteredPowerShellScripts. Reason: {ex.Message}");
-                log.Error("Couldn't return GetRegisteredPowerShellScripts", ex);
+                var message = $"Couldn't return GetRegisteredPowerShellScriptPrototype. Reason: {ex.Message}";
+                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
+                log.Error(message, ex);
             }
             return null;
         }
 
-        string IPowerShellService.InvokePowerShellScript(string powerShellScriptName)
+        void IPowerShellService.InvokePowerShellScript(string powerShellScriptName)
         {
             try
             {
@@ -79,10 +98,10 @@ namespace PowerShellService
             }
             catch (Exception ex)
             {
-                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: $"Couldn't invoke InvokePowerShellScript. Reason: {ex.Message}");
-                log.Error($"Couldn't invoke InvokePowerShellScript", ex);
+                var message = $"Couldn't invoke InvokePowerShellScript. Reason: {ex.Message}";
+                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
+                log.Error(message, ex);
             }
-            return "";
         }
     }
 }
