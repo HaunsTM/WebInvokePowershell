@@ -42,8 +42,8 @@ namespace PowerShellService
             try
             {
                 var fakeNamesList = new List<string> {"ScripName1", "ScripName2", "ScripName3", "ScripName4" };
-                return fakeNamesList;
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
+                return fakeNamesList;
 
             }
             catch (Exception ex)
