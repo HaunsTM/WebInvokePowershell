@@ -2,6 +2,8 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
+using PowerShellService.ViewModel;
+
 namespace PowerShellService.Interfaces
 {
     [ServiceContract]
@@ -10,16 +12,16 @@ namespace PowerShellService.Interfaces
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "GetNamesForRegisteredPowerShellScripts")]
-        List<string> GetNamesForRegisteredPowerShellScripts();
+        List<PowerShellScript_NameAndDescription> GetNamesForRegisteredPowerShellScripts();
 
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "GetRegisteredPowerShellScriptPrototype?powerShellScriptName={powerShellScriptName}")]
-        Model.PowerShellScript GetRegisteredPowerShellScriptPrototype(string powerShellScriptName);
+        PowerShellScript_NameAndDescriptionAndParametersWithDescription GetRegisteredPowerShellScriptPrototype(string powerShellScriptName);
 
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "InvokePowerShellScript?powerShellScriptName={powerShellScriptName}")]
-        void InvokePowerShellScript(string powerShellScriptName);
+        void InvokePowerShellScript(string powerShellScriptName, string[] param);
     }
 }

@@ -6,9 +6,13 @@ using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceProcess;
+using System.Linq;
+using System.Data.Entity;
 using System.Text.RegularExpressions;
+
 using PowerShellService.Interfaces;
 using PowerShellService.Model;
+using PowerShellService.ViewModel;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
@@ -17,6 +21,8 @@ namespace PowerShellService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public partial class PowerShellService : ServiceBase, IPowerShellService
     {
+        private PersistentData _pD = null;
+
         //Here is the once-per-class call to initialize the log object
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -33,6 +39,18 @@ namespace PowerShellService
                 context.OutgoingResponse.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
                 context.OutgoingResponse.Headers.Add("Access-Control-Allow-Header", "Content-Type, Accept, SOAPAction");
                 context.OutgoingResponse.Headers.Add("Access-Control-Allow-Credentials", "false");
+            }
+        }
+
+        private PersistentData PersistentDataProvider
+        {
+            get
+            {
+                if (_pD == null)
+                {
+                    _pD = new PersistentData();
+                }
+                return _pD;
             }
         }
 
@@ -102,16 +120,20 @@ namespace PowerShellService
             var dataReadBack = pD.RegisteredPowerShellScripts;
         }
 
-
-        List<string> IPowerShellService.GetNamesForRegisteredPowerShellScripts()
+        List<PowerShellScript_NameAndDescription> IPowerShellService.GetNamesForRegisteredPowerShellScripts()
         {
             try
             {
-                CreateDemoData();
-                var fakeNamesList = new List<string> {"ScripName1", "ScripName2", "ScripName3", "ScripName4" };
-                this.SetResponseHttpStatus(HttpStatusCode.OK);
-                return fakeNamesList;
+                //CreateDemoData();
+                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
+                var registeredScripts_NameAndDescription = registeredScripts.Select(
+                    script => 
+                        new PowerShellScript_NameAndDescription {
+                            Name = script.Name,
+                            Description = script.Description }).ToList();
 
+                this.SetResponseHttpStatus(HttpStatusCode.OK);
+                return registeredScripts_NameAndDescription;
             }
             catch (Exception ex)
             {
@@ -122,13 +144,26 @@ namespace PowerShellService
             return null;
         }
 
-        Model.PowerShellScript IPowerShellService.GetRegisteredPowerShellScriptPrototype(string powerShellScriptName)
+        PowerShellScript_NameAndDescriptionAndParametersWithDescription IPowerShellService.GetRegisteredPowerShellScriptPrototype(string powerShellScriptName)
         {
             try
             {
+                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
 
+                var currentScript = registeredScripts
+                    .Where(script => script.Name == powerShellScriptName)
+                    .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
+                    {
+                        Name = script.Name,
+                        Description = script.Description,
+                        Parameters = script.Parameters.Select(p => new ParameterDescription
+                        {
+                            Description = p.Description,
+                            Name = p.Name
+                        }).ToList()
+                    }).First();
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
-
+                return currentScript;
             }
             catch (Exception ex)
             {
@@ -139,10 +174,11 @@ namespace PowerShellService
             return null;
         }
 
-        void IPowerShellService.InvokePowerShellScript(string powerShellScriptName)
+        void IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string[] param)
         {
             try
             {
+
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
 
             }
