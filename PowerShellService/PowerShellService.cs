@@ -7,7 +7,6 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceProcess;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
 using PowerShellService.Interfaces;
 using PowerShellService.Model;
 
@@ -25,7 +24,7 @@ namespace PowerShellService
         {
             var context = WebOperationContext.Current;
             context.OutgoingResponse.StatusCode = statusCode;
-            context.OutgoingResponse.StatusDescription = Regex.Replace(statusDescription, @"\r\n?|\n", ""); 
+            context.OutgoingResponse.StatusDescription = Regex.Replace(statusDescription, @"\r\n?|\n", "");
 
             context.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
 
@@ -37,10 +36,78 @@ namespace PowerShellService
             }
         }
 
+        private void CreateDemoData()
+        {
+            var dataForSave = new List<Model.PowerShellScript>
+            {
+                new PowerShellScript
+                {
+                    File = @"c:\Powershell\UpdateRegister.ps1",
+                    Name = "UpdateRegister",
+                    Description = "A simple script to update a simple register.",
+                    Parameters = new List<PowershellScriptParameter>
+                    {
+                        new PowershellScriptParameter
+                        {
+                            Description = "Name"
+                        },
+                        new PowershellScriptParameter
+                        {
+                            Description = "Favorite color"
+                        }
+                    }
+                },
+                new PowerShellScript
+                {
+                    File = @"c:\Powershell\UpdateMobileNumber.ps1",
+                    Name = "UpdateMobileNumber",
+                    Description = "When a user has got a new mobile phone number, this script will provide all necessary registers with new up to date data.",
+                    Parameters = new List<PowershellScriptParameter>
+                    {
+                        new PowershellScriptParameter
+                        {
+                            Description = "Update mobile phone number"
+                        }
+                    }
+                },
+                new PowerShellScript
+                {
+                    File = @"c:\Powershell\ChangeAddresses.ps1",
+                    Name = "ChangeAddresses",
+                    Description = "This script will help users to change several types of addresses",
+                    Parameters = new List<PowershellScriptParameter>
+                    {
+                        new PowershellScriptParameter
+                        {
+                            Description = "E-mail"
+                        },
+                        new PowershellScriptParameter
+                        {
+                            Description = "Office address"
+                        },
+                        new PowershellScriptParameter
+                        {
+                            Description = "Home address"
+                        },
+                        new PowershellScriptParameter
+                        {
+                            Description = "Office address"
+                        }
+                    }
+                }
+            };
+            var pD = new PersistentData();
+            pD.RegisteredPowerShellScripts = dataForSave;
+
+            var dataReadBack = pD.RegisteredPowerShellScripts;
+        }
+
+
         List<string> IPowerShellService.GetNamesForRegisteredPowerShellScripts()
         {
             try
             {
+                CreateDemoData();
                 var fakeNamesList = new List<string> {"ScripName1", "ScripName2", "ScripName3", "ScripName4" };
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
                 return fakeNamesList;
@@ -59,23 +126,6 @@ namespace PowerShellService
         {
             try
             {
-                var test = new Model.PowerShellScript
-                {
-                    PowerShellFile = "sdfhg",
-                    Parameters = new List<PowershellScriptParameter>
-                    {
-                        new PowershellScriptParameter
-                        {
-                            Description = "Namn"
-                        }
-                    }
-                };
-                var serializer = new JavaScriptSerializer();
-                var serializedResult = serializer.Serialize(test);
-
-                var deserializedResult = serializer.Deserialize<List<Model.PowerShellScript>>(serializedResult);
-                // Write that JSON to txt file,  
-                System.IO.File.WriteAllText("" + "output.json", serializedResult);
 
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
 
