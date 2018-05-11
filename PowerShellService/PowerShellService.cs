@@ -119,62 +119,7 @@ namespace PowerShellService
 
             var dataReadBack = pD.RegisteredPowerShellScripts;
         }
-
-        List<PowerShellScript_NameAndDescription> IPowerShellService.GetNamesForRegisteredPowerShellScripts()
-        {
-            try
-            {
-                //CreateDemoData();
-                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
-                var registeredScripts_NameAndDescription = registeredScripts.Select(
-                    script => 
-                        new PowerShellScript_NameAndDescription {
-                            Name = script.Name,
-                            Description = script.Description }).ToList();
-
-                this.SetResponseHttpStatus(HttpStatusCode.OK);
-                return registeredScripts_NameAndDescription;
-            }
-            catch (Exception ex)
-            {
-                var message = $"Couldn't return GetNamesForRegisteredPowerShellScripts. Reason: {ex.Message}";
-                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
-                log.Error(message, ex);
-            }
-            return null;
-        }
-
-        PowerShellScript_NameAndDescriptionAndParametersWithDescription IPowerShellService.GetRegisteredPowerShellScriptPrototype(string powerShellScriptName)
-        {
-            try
-            {
-                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
-
-                var currentScript = registeredScripts
-                    .Where(script => script.Name == powerShellScriptName)
-                    .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
-                    {
-                        Name = script.Name,
-                        Description = script.Description,
-                        Parameters = script.Parameters.Select(p => new ParameterDescription
-                        {
-                            Description = p.Description,
-                            Name = p.Name
-                        }).ToList()
-                    }).First();
-                this.SetResponseHttpStatus(HttpStatusCode.OK);
-                return currentScript;
-            }
-            catch (Exception ex)
-            {
-                var message = $"Couldn't return GetRegisteredPowerShellScriptPrototype. Reason: {ex.Message}";
-                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
-                log.Error(message, ex);
-            }
-            return null;
-        }
-
-
+        
         List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> IPowerShellService.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters()
         {
             try
@@ -203,11 +148,12 @@ namespace PowerShellService
             }
             return null;
         }
-        void IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string[] param)
+        string IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string args)
         {
+            var result = String.Empty;
             try
             {
-
+                result = "done";
                 this.SetResponseHttpStatus(HttpStatusCode.OK);
 
             }
@@ -216,7 +162,10 @@ namespace PowerShellService
                 var message = $"Couldn't invoke InvokePowerShellScript. Reason: {ex.Message}";
                 this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
                 log.Error(message, ex);
+                result = message;
             }
+
+            return result;
         }
     }
 }
