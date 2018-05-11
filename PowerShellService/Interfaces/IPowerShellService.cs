@@ -19,6 +19,19 @@ namespace PowerShellService.Interfaces
             UriTemplate = "GetRegisteredPowerShellScriptPrototype?powerShellScriptName={powerShellScriptName}")]
         PowerShellScript_NameAndDescriptionAndParametersWithDescription GetRegisteredPowerShellScriptPrototype(string powerShellScriptName);
 
+
+
+
+
+
+        //probably the only needed method
+        [WebInvoke(Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters")]
+        List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
+
+
+
         [WebInvoke(Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "InvokePowerShellScript?powerShellScriptName={powerShellScriptName}")]

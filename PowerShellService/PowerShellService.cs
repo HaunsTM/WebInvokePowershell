@@ -174,6 +174,35 @@ namespace PowerShellService
             return null;
         }
 
+
+        List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> IPowerShellService.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters()
+        {
+            try
+            {
+                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
+
+                var scripts = registeredScripts
+                    .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
+                    {
+                        Name = script.Name,
+                        Description = script.Description,
+                        Parameters = script.Parameters.Select(p => new ParameterDescription
+                        {
+                            Description = p.Description,
+                            Name = p.Name
+                        }).ToList()
+                    }).ToList();
+                this.SetResponseHttpStatus(HttpStatusCode.OK);
+                return scripts;
+            }
+            catch (Exception ex)
+            {
+                var message = $"Couldn't return GetRegisteredPowerShellScriptPrototype. Reason: {ex.Message}";
+                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: message);
+                log.Error(message, ex);
+            }
+            return null;
+        }
         void IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string[] param)
         {
             try
