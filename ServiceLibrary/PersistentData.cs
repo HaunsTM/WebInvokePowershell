@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using ServiceLibrary.Model;
@@ -7,23 +8,11 @@ namespace ServiceLibrary
 {
     internal class PersistentData
     {
+        private string _powerShellScriptFilesDescriptionFilePath = String.Empty;
 
-        public string CurrentProjectPath
+        internal PersistentData(string powerShellScriptFilesDescriptionFilePath)
         {
-            get
-            {
-                var currrentBinOutput = Directory.GetCurrentDirectory();
-                var projectPath = Directory.GetParent(currrentBinOutput).Parent.FullName + @"\";
-                return projectPath;
-            }
-        }
-
-        public string PowerShellScriptFilesDescriptionFilePath
-        {
-            get
-            {
-                return CurrentProjectPath + @"PowerShellScripts\PowerShellScriptFilesDescription.json";
-            }
+            _powerShellScriptFilesDescriptionFilePath = powerShellScriptFilesDescriptionFilePath;
         }
 
         public List<PowerShellScript> RegisteredPowerShellScripts
@@ -31,7 +20,7 @@ namespace ServiceLibrary
             //serializes/deserializes info regarding the power shell script files that should be exposed by this service
             get {
                 // deserialize JSON directly from a file
-                using (var file = File.OpenText(PowerShellScriptFilesDescriptionFilePath))
+                using (var file = File.OpenText(_powerShellScriptFilesDescriptionFilePath))
                 {
                     var serializer = new JsonSerializer();
                     var registeredPowerShellScripts = (List<PowerShellScript>)serializer.Deserialize(file, typeof(List<PowerShellScript>));
@@ -41,7 +30,7 @@ namespace ServiceLibrary
             }
             set
             {
-                using (StreamWriter sw = new StreamWriter(PowerShellScriptFilesDescriptionFilePath))
+                using (StreamWriter sw = new StreamWriter(_powerShellScriptFilesDescriptionFilePath))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
                     var serializer = new JsonSerializer();

@@ -8,6 +8,12 @@ namespace ServiceLibrary
     public class Commander: ICommander
     {
         private PersistentData _pD = null;
+        private string _powerShellScriptFilesDescriptionFilePath = string.Empty;
+
+        public Commander(string powerShellScriptFilesDescriptionFilePath)
+        {
+            _powerShellScriptFilesDescriptionFilePath = powerShellScriptFilesDescriptionFilePath;
+        }
 
         private PersistentData PersistentDataProvider
         {
@@ -15,7 +21,7 @@ namespace ServiceLibrary
             {
                 if (_pD == null)
                 {
-                    _pD = new PersistentData();
+                    _pD = new PersistentData(_powerShellScriptFilesDescriptionFilePath);
                 }
                 return _pD;
             }
@@ -45,7 +51,6 @@ namespace ServiceLibrary
                 var message = $"Couldn't return GetRegisteredPowerShellScriptPrototype. Reason: {ex.Message}";
                 throw new Exception(message, ex);
             }
-            return null;
         }
 
         string ICommander.InvokePowerShellScript(string powerShellScriptName, string args)
