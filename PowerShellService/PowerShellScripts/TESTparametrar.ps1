@@ -1,0 +1,1 @@
+﻿[CmdletBinding()]Param(     [Parameter(Mandatory=$True)]    [string]$mailbox,    [Parameter(Mandatory=$True)]    [string]$user    )"Följande användare: $user, har lagts till i lådan: $mailbox" | Out-String
