@@ -1,7 +1,7 @@
 [
   {
     "Description": "A simple script that just returns input data",
-    "File": "PowerShellScripts\TESTparametrar.ps1",
+    "File": "PowerShellScripts\\TESTparametrar.ps1",
     "Name": "Test parameters",
     "Parameters": [
       {
