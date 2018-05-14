@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PowerShellService")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5848b052-dcbe-422a-a1f5-8d8f10d2a50c")]
+[assembly: Guid("b2eb7fdf-bb15-40c0-a8be-06c0a070f84b")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
+// You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
