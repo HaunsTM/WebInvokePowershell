@@ -53,9 +53,20 @@ namespace ServiceLibrary
             }
         }
 
-        string ICommander.InvokePowerShellScript(string powerShellScriptName, string args)
+        string ICommander.InvokePowerShellScript(string scriptFile, List<string> args)
         {
-            return "";
+            try
+            {
+                var pSC = new PowerShellCommander();
+
+                return pSC.RunPowershellScript(scriptFile, args);
+
+            }
+            catch (Exception ex)
+            {
+                var message = $"Couldn't invoke power shell script. Reason: {ex.Message}";
+                throw new Exception(message, ex);
+            }
         }
     }
 }

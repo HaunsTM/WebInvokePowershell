@@ -8,7 +8,7 @@ namespace ServiceLibrary
 {
     internal class PowerShellCommander
     {
-        private static void RunPowershellScript(string scriptFile, List<string> parameters = null)
+        internal string RunPowershellScript(string scriptFile, List<string> parameters = null)
         {
             // Validate parameters
             if (string.IsNullOrEmpty(scriptFile))
@@ -43,6 +43,8 @@ namespace ServiceLibrary
                 {
                     
                 }
+
+                return "";
             }
         }
     }
