@@ -31,19 +31,7 @@ namespace ServiceLibrary
         {
             try
             {
-                var registeredScripts = PersistentDataProvider.RegisteredPowerShellScripts;
-
-                var scripts = registeredScripts
-                    .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
-                    {
-                        Name = script.Name,
-                        Description = script.Description,
-                        Parameters = script.Parameters.Select(p => new ParameterDescription
-                        {
-                            Description = p.Description,
-                            Name = p.Name
-                        }).ToList()
-                    }).ToList();
+                var scripts = _pD.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
                 return scripts;
             }
             catch (Exception ex)

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using ServiceLibrary.Model;
+using ServiceLibrary.ViewModel;
 
 namespace ServiceLibrary
 {
@@ -15,7 +17,7 @@ namespace ServiceLibrary
             _powerShellScriptFilesDescriptionFilePath = powerShellScriptFilesDescriptionFilePath;
         }
 
-        public List<PowerShellScript> RegisteredPowerShellScripts
+        internal List<PowerShellScript> RegisteredPowerShellScripts
         {
             //serializes/deserializes info regarding the power shell script files that should be exposed by this service
             get {
@@ -37,6 +39,30 @@ namespace ServiceLibrary
                     serializer.Serialize(writer, value);
                 }
             }
+        }
+
+        internal List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters()
+        {
+            var scripts = RegisteredPowerShellScripts
+                .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
+                {
+                    Name = script.Name,
+                    Description = script.Description,
+                    Parameters = script.Parameters.Select(p => new ParameterDescription
+                    {
+                        Description = p.Description,
+                        Name = p.Name
+                    }).ToList()
+                }).ToList();
+            return scripts;
+        }
+
+        public PowerShellScript GetPowerShellScriptBy(string name)
+        {
+            var foundScript = this.RegisteredPowerShellScripts
+                .Where(n => n.Name == name)
+                .Single();
+            return foundScript;
         }
     }
 }

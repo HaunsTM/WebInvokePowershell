@@ -35,6 +35,11 @@ namespace PowerShellService
             }
         }
 
+        private string CurrentUser
+        {
+            get { return "ANONYMOUS user"; }
+        }
+
         private string PowerShellScriptFilesDescriptionFilePath
         {
             get
@@ -55,6 +60,7 @@ namespace PowerShellService
         {
             try
             {
+                log.Info($"{CurrentUser} is asking for a list of available PowerSHell scripts.");
                 return _commander.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
             }
             catch (Exception ex)
@@ -67,8 +73,18 @@ namespace PowerShellService
 
         string IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string args)
         {
-            return _commander.InvokePowerShellScript(powerShellScriptName, args.Split(',').ToList());
-            return args;
+
+            try
+            {
+                log.Info($"{CurrentUser} is invoking PowerShell script #{powerShellScriptName}# with arguments {args}");
+                return _commander.InvokePowerShellScript(powerShellScriptName, args.Split(',').ToList());
+            }
+            catch (Exception ex)
+            {
+                this.SetResponseHttpStatus(statusCode: HttpStatusCode.BadRequest, statusDescription: ex.Message);
+                log.Error(ex.Message, ex);
+            }
+            return null;
         }
     }
 }

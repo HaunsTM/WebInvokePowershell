@@ -7,6 +7,6 @@ namespace ServiceLibrary.Model
         public string File { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<PowershellScriptParameter> Parameters { get; set; }
+        public List<IPowershellScriptParameter> Parameters { get; set; }
     }
 }
