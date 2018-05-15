@@ -7,6 +7,7 @@ using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
 using System.Text.RegularExpressions;
 using ServiceLibrary;
+using ServiceLibrary.Model;
 using ServiceLibrary.ViewModel;
 
 namespace PowerShellService
@@ -61,7 +62,8 @@ namespace PowerShellService
             try
             {
                 log.Info($"{CurrentUser} is asking for a list of available PowerSHell scripts.");
-                return _commander.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
+                var scripts = _commander.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
+                return scripts;
             }
             catch (Exception ex)
             {
@@ -71,13 +73,13 @@ namespace PowerShellService
             return null;
         }
 
-        string IPowerShellService.InvokePowerShellScript(string powerShellScriptName, string args)
+        string IPowerShellService.InvokePowerShellScript(PowerShellScript powerShellScript)
         {
 
             try
             {
-                log.Info($"{CurrentUser} is invoking PowerShell script #{powerShellScriptName}# with arguments {args}");
-                return _commander.InvokePowerShellScript(powerShellScriptName, args.Split(',').ToList());
+                log.Info($"{CurrentUser} is invoking PowerShell script #{powerShellScript.Name}# with arguments {powerShellScript.Parameters.Select(x => new {Name = x.Name, UserProvidedValue = x.UserProvidedValue}).ToList().ToString()}");
+                return _commander.InvokePowerShellScript(powerShellScript);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using ServiceLibrary.Model;
 using ServiceLibrary.ViewModel;
 
 namespace PowerShellService
@@ -17,10 +18,10 @@ namespace PowerShellService
 
         [OperationContract]
         [WebInvoke(Method = "POST",
-            BodyStyle = WebMessageBodyStyle.WrappedRequest,
+            BodyStyle = WebMessageBodyStyle.Bare,
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "InvokePowerShellScript")]
-        string InvokePowerShellScript(string powerShellScriptName, string args);
+        string InvokePowerShellScript(PowerShellScript powerShellScript);
     }
 }

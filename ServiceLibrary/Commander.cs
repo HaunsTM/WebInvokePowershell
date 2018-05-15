@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ServiceLibrary.Model;
 using ServiceLibrary.ViewModel;
 
 namespace ServiceLibrary
@@ -31,7 +32,7 @@ namespace ServiceLibrary
         {
             try
             {
-                var scripts = _pD.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
+                var scripts = PersistentDataProvider.GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
                 return scripts;
             }
             catch (Exception ex)
@@ -41,13 +42,16 @@ namespace ServiceLibrary
             }
         }
 
-        string ICommander.InvokePowerShellScript(string scriptFile, List<string> args)
+        string ICommander.InvokePowerShellScript(PowerShellScript powerShellScript)
         {
             try
             {
                 var pSC = new PowerShellCommander();
+                var scriptFile = PersistentDataProvider.GetPowerShellScriptBy(name: powerShellScript.Name);
+                powerShellScript.Parameters.Select(x => new { x.Name + x.UserProvidedValue }).ToList().ToString()
 
-                return pSC.RunPowershellScript(scriptFile, args);
+                    /// bygg ihop strängen som ska köras
+                return pSC.RunPowershellScript( scriptFile, args);
 
             }
             catch (Exception ex)

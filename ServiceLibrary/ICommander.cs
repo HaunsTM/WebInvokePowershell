@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ServiceLibrary.Model;
 using ServiceLibrary.ViewModel;
 
 namespace ServiceLibrary
@@ -7,6 +8,6 @@ namespace ServiceLibrary
     {
         List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
 
-        string InvokePowerShellScript(string scriptFile, List<string> args);
+        string InvokePowerShellScript(PowerShellScript powerShellScript);
     }
 }

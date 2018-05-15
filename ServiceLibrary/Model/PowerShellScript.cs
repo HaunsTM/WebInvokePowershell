@@ -1,12 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace ServiceLibrary.Model
 {
-    internal class PowerShellScript : IPowerShellScript
+    [DataContract]
+    public class PowerShellScript
     {
+        [DataMember]
         public string File { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public string Description { get; set; }
-        public List<IPowershellScriptParameter> Parameters { get; set; }
+        [DataMember]
+        public List<PowershellScriptParameter> Parameters { get; set; }
     }
 }

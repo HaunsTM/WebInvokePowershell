@@ -25,7 +25,8 @@ namespace ServiceLibrary
                 using (var file = File.OpenText(_powerShellScriptFilesDescriptionFilePath))
                 {
                     var serializer = new JsonSerializer();
-                    var registeredPowerShellScripts = (List<PowerShellScript>)serializer.Deserialize(file, typeof(List<PowerShellScript>));
+                    var registeredPowerShellScripts = (List<PowerShellScript>)serializer
+                        .Deserialize(file, typeof(List<PowerShellScript>));
 
                     return registeredPowerShellScripts;
                 }

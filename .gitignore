@@ -2,3 +2,5 @@ v15
 bin
 /PowerShellService/obj
 packages
+/PowerShellService/*.svclog
+/PowerShellService/log.txt

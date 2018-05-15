@@ -5,10 +5,12 @@
     "Name": "Test parameters",
     "Parameters": [
       {
+        "Name": "user",
         "Description": "String value 1",
         "UserProvidedValue": null
       },
       {
+        "Name": "mailbox",
         "Description": "String value 2",
         "UserProvidedValue": null
       }
