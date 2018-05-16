@@ -4,7 +4,6 @@ C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\ServiceLi
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\EntityFramework.dll
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\Newtonsoft.Json.dll
-C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\System.Management.Automation.dll
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\EntityFramework.xml
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\Newtonsoft.Json.xml
@@ -13,3 +12,4 @@ C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\obj\Debug\ServiceLi
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\obj\Debug\ServiceLibrary.csproj.CopyComplete
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\obj\Debug\ServiceLibrary.dll
 C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\obj\Debug\ServiceLibrary.pdb
+C:\Users\xxbaldeh\Desktop\WebInvokePowershell\ServiceLibrary\bin\Debug\System.Management.Automation.dll

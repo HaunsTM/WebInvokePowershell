@@ -8,6 +8,6 @@ namespace ServiceLibrary
     {
         List<PowerShellScript_NameAndDescriptionAndParametersWithDescription> GetRegisteredPowerShellScripts_NamesDescriptionsAndParameters();
 
-        string InvokePowerShellScript(PowerShellScript powerShellScript);
+        PowerShellScriptRunResult InvokePowerShellScript(PowerShellScript powerShellScript);
     }
 }

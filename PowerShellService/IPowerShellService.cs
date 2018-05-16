@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using ServiceLibrary;
 using ServiceLibrary.Model;
 using ServiceLibrary.ViewModel;
 
@@ -22,6 +23,6 @@ namespace PowerShellService
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "InvokePowerShellScript")]
-        string InvokePowerShellScript(PowerShellScript powerShellScript);
+        PowerShellScriptRunResult InvokePowerShellScript(PowerShellScript powerShellScript);
     }
 }

@@ -1,51 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using ServiceLibrary.ViewModel;
 
 namespace ServiceLibrary
 {
     internal class PowerShellCommander
     {
-        internal string RunPowershellScript(string scriptFile, List<string> parameters = null)
+        internal PowerShellScriptRunResult RunPowerShellScript(string scriptFile, Dictionary<string, string> parameters = null)
         {
-            // Validate parameters
-            if (string.IsNullOrEmpty(scriptFile))
+            try
             {
-                throw new ArgumentNullException("scriptFile");
+                var preparedParameters = string.Join(" ", parameters.Select(x => " " + "-" + x.Key + " \'" + x.Value + "\'").ToArray());
+                var concatenatedArguments = $"{scriptFile} {preparedParameters}";
+
+                //https://stackoverflow.com/questions/19514370/how-to-open-ps1-file-in-powershell-ise-in-c-sharp
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"powershell.exe";
+
+                //provide powershell script full path
+                startInfo.Arguments = concatenatedArguments;
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                Process process = new Process();
+                process.StartInfo = startInfo;
+                // execute script call start process
+                process.Start();
+
+                // get output information
+                var output = process.StandardOutput.ReadToEnd();
+
+                // catch error information
+                var errors = process.StandardError.ReadToEnd();
+
+                var result = new PowerShellScriptRunResult(output, errors);
+                return result;
+            }
+            catch (Exception e)
+            {
+                var message = $"Couldn't execute PowerShell script {scriptFile}.";
+                throw new Exception(message, e);
             }
 
-            var runspaceConfiguration = RunspaceConfiguration.Create();
-            using (var runspace = RunspaceFactory.CreateRunspace(runspaceConfiguration))
-            {
-                runspace.Open();
-                var scriptInvoker = new RunspaceInvoke(runspace);
-                scriptInvoker.Invoke("Set-ExecutionPolicy Unrestricted");
-
-                var pipeline = runspace.CreatePipeline();
-
-                var scriptCommand = new Command(scriptFile);
-                if (parameters != null)
-                {
-                    var commandParameters = new Collection<CommandParameter>();
-                    foreach (string scriptParameter in parameters)
-                    {
-                        var commandParm = new CommandParameter(null, scriptParameter);
-                        commandParameters.Add(commandParm);
-                        scriptCommand.Parameters.Add(commandParm);
-                    }
-
-                }
-                pipeline.Commands.Add(scriptCommand);
-                var results = pipeline.Invoke();
-                foreach (var psObject in results)
-                {
-                    
-                }
-
-                return "";
-            }
         }
     }
 }

@@ -9,11 +9,15 @@ namespace ServiceLibrary
     public class Commander: ICommander
     {
         private PersistentData _pD = null;
-        private string _powerShellScriptFilesDescriptionFilePath = string.Empty;
+        private PowerShellCommander _pSC = null;
 
-        public Commander(string powerShellScriptFilesDescriptionFilePath)
+        private string _powerShellScriptFilesPath = string.Empty;
+        private string _powerShellScriptFilesDescriptionFile = string.Empty;
+
+        public Commander(string powerShellScriptFilesPath, string powerShellScriptFilesDescriptionFileName)
         {
-            _powerShellScriptFilesDescriptionFilePath = powerShellScriptFilesDescriptionFilePath;
+            _powerShellScriptFilesPath = powerShellScriptFilesPath;
+            _powerShellScriptFilesDescriptionFile = powerShellScriptFilesPath + powerShellScriptFilesDescriptionFileName;
         }
 
         private PersistentData PersistentDataProvider
@@ -22,9 +26,21 @@ namespace ServiceLibrary
             {
                 if (_pD == null)
                 {
-                    _pD = new PersistentData(_powerShellScriptFilesDescriptionFilePath);
+                    _pD = new PersistentData(_powerShellScriptFilesDescriptionFile);
                 }
                 return _pD;
+            }
+        }
+
+        private PowerShellCommander PowerShellCommanderProvider
+        {
+            get
+            {
+                if (_pSC == null)
+                {
+                    _pSC = new PowerShellCommander();
+                }
+                return _pSC;
             }
         }
 
@@ -42,23 +58,15 @@ namespace ServiceLibrary
             }
         }
 
-        string ICommander.InvokePowerShellScript(PowerShellScript powerShellScript)
+        PowerShellScriptRunResult ICommander.InvokePowerShellScript(PowerShellScript powerShellScript)
         {
-            try
-            {
-                var pSC = new PowerShellCommander();
-                var scriptFile = PersistentDataProvider.GetPowerShellScriptBy(name: powerShellScript.Name);
-                powerShellScript.Parameters.Select(x => new { x.Name + x.UserProvidedValue }).ToList().ToString()
+            var pSC = new PowerShellCommander();
+            var scriptFile = _powerShellScriptFilesPath + PersistentDataProvider.GetPowerShellScriptBy(name: powerShellScript.Name).File;
+            var parameters = powerShellScript.Parameters.ToDictionary(key => key.Name, value => value.UserProvidedValue);
 
-                    /// bygg ihop strängen som ska köras
-                return pSC.RunPowershellScript( scriptFile, args);
+            var result = PowerShellCommanderProvider.RunPowerShellScript(scriptFile, parameters);
 
-            }
-            catch (Exception ex)
-            {
-                var message = $"Couldn't invoke power shell script. Reason: {ex.Message}";
-                throw new Exception(message, ex);
-            }
+            return result;
         }
     }
 }

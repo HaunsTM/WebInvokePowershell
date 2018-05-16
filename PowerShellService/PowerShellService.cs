@@ -23,7 +23,9 @@ namespace PowerShellService
 
         public PowerShellService()
         {
-            _commander = new Commander(this.PowerShellScriptFilesDescriptionFilePath);
+            _commander = new Commander(
+                powerShellScriptFilesPath: CurrentProjectPath + @"PowerShellScripts\", 
+                powerShellScriptFilesDescriptionFileName: "PowerShellScriptFilesDescription.json");
         }
 
         private string CurrentProjectPath
@@ -40,14 +42,7 @@ namespace PowerShellService
         {
             get { return "ANONYMOUS user"; }
         }
-
-        private string PowerShellScriptFilesDescriptionFilePath
-        {
-            get
-            {
-                return CurrentProjectPath + @"PowerShellScripts\PowerShellScriptFilesDescription.json";
-            }
-        }
+        
         private void SetResponseHttpStatus(HttpStatusCode statusCode, string statusDescription = "")
         {
             var context = WebOperationContext.Current;
@@ -73,7 +68,7 @@ namespace PowerShellService
             return null;
         }
 
-        string IPowerShellService.InvokePowerShellScript(PowerShellScript powerShellScript)
+        PowerShellScriptRunResult IPowerShellService.InvokePowerShellScript(PowerShellScript powerShellScript)
         {
 
             try
