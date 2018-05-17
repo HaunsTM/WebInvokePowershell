@@ -28,7 +28,10 @@ namespace ServiceLibrary
                     var registeredPowerShellScripts = (List<PowerShellScript>)serializer
                         .Deserialize(file, typeof(List<PowerShellScript>));
 
-                    return registeredPowerShellScripts;
+                    var registeredPowerShellScriptsInAlphabeticalOrder =
+                        registeredPowerShellScripts.OrderBy(s => s.Name).ToList();
+
+                    return registeredPowerShellScriptsInAlphabeticalOrder;
                 }
             }
             set
