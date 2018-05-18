@@ -51,6 +51,7 @@ namespace ServiceLibrary
                 .Select(script => new PowerShellScript_NameAndDescriptionAndParametersWithDescription
                 {
                     Name = script.Name,
+                    FileNameWithoutPath = Path.GetFileName(script.File),
                     Description = script.Description,
                     Parameters = script.Parameters.Select(p => new ParameterDescription
                     {

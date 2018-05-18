@@ -4,3 +4,4 @@ bin
 packages
 /PowerShellService/*.svclog
 /PowerShellService/log.txt
+*.svclog

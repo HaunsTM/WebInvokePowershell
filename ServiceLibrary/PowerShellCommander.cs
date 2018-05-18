@@ -16,10 +16,10 @@ namespace ServiceLibrary
             try
             {
                 var preparedParameters = string.Join(" ", parameters.Select(x => " " + "-" + x.Key + " \'" + x.Value + "\'").ToArray());
-                var concatenatedArguments = $"{scriptFile} {preparedParameters}";
+                var concatenatedArguments = $"\"{scriptFile}\"{preparedParameters}";
 
                 //https://stackoverflow.com/questions/19514370/how-to-open-ps1-file-in-powershell-ise-in-c-sharp
-                ProcessStartInfo startInfo = new ProcessStartInfo();
+                var startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
 
                 //provide powershell script full path
@@ -28,7 +28,7 @@ namespace ServiceLibrary
                 startInfo.RedirectStandardError = true;
                 startInfo.UseShellExecute = false;
                 startInfo.CreateNoWindow = true;
-                Process process = new Process();
+                var process = new Process();
                 process.StartInfo = startInfo;
                 // execute script call start process
                 process.Start();
