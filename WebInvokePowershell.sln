@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{6C2C495C-7446-4BDB-A772-EDA3A18DF165}"
 	ProjectSection(SolutionItems) = preProject
 		documentation\loactionForPowerShellScripts.png = documentation\loactionForPowerShellScripts.png
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
