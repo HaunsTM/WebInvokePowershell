@@ -89,7 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="PowerShellScripts\PowerShellScriptFilesDescription.json" />
     <Content Include="PowerShellScripts\TESTparametrar.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

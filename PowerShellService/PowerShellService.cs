@@ -25,7 +25,7 @@ namespace PowerShellService
         {
             _commander = new Commander(
                 powerShellScriptFilesPath: CurrentProjectPath + @"PowerShellScripts\", 
-                powerShellScriptFilesDescriptionFileName: "PowerShellScriptFilesDescription.json");
+                powerShellScriptFilesDescriptionFileName: "PowerShellScriptFilesDefinitions.json");
         }
 
         private string CurrentProjectPath
