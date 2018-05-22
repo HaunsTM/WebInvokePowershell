@@ -5,3 +5,5 @@ packages
 /PowerShellService/*.svclog
 /PowerShellService/log.txt
 *.svclog
+obj
+Debug
